@@ -2,7 +2,7 @@
     <div class="container mt-3">
         <h2 v-if="isLoading">Caricando...</h2>
         <div v-if="posts.length > 0" class="row">
-            <div :key="post.id" class="card-post" v-for="post in posts">
+            <div :key="post.id" class="card-post position-relative" v-for="post in posts">
                 <img :src="post.image" :alt="post.title" />
                 <h4>{{ post.title }}</h4>
                 <p><strong>Descrizione:</strong>{{ post.content }}</p>
@@ -14,11 +14,7 @@
                         >{{ post.category.label }}</span
                     >
                 </div>
-                <!-- <div v-if="post.tags">
-                    <span :key="tag.id" v-for="tag in tags">
-                        {{tag.id}}
-                    </span>
-                </div> -->
+                <router-link :to="{ name: 'PostDetail', params: { slug: post.slug } }" class="btn btn-primary position-absolute ">Visualizza</router-link>
             </div>
         </div>
         <h2 v-else>Non ci sono post.</h2>
@@ -27,7 +23,7 @@
 </template>
 
 <script>
-import PageModule from  "../PageModule.vue";
+import PageModule from  './PageModule.vue'
 export default {
     name: "PostList",
     components:{
@@ -38,17 +34,16 @@ export default {
             isLoading: true,
             posts: [],
             pagination: {},
+            page: 1,
         };
     },
     methods: {
         getPosts() {
             this.axios
-                .get("/api/posts")
+                .get(`http://127.0.0.1:8000/api/posts?page=${this.page}`)
                 .then((res) => {
                     const { data, current_page, last_page } = res.data;
-
-                    this.posts = data;
-
+                    this.posts = data;  
                     this.pagination = {
                         "currentPage" : current_page,
                         "lastPage" : last_page,
@@ -81,6 +76,11 @@ export default {
         left: -10px;
         top: -10px;
         border-radius: 20px 20px 0 0;
+    }
+
+    a{
+        right: 10px;
+        bottom: 10px;
     }
 }
 </style>

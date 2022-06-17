@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h2>HomePage</h2>
+        <h2 class="container mt-3">HomePage</h2>
         <PostList></PostList>
     </div>
 </template>
@@ -10,7 +10,7 @@ import PostList from './PostList.vue';
 
 export default {
     name:"HomePage",
-    component:{
+    components:{
         PostList
     }
 }

@@ -11,9 +11,9 @@ const router = new VueRouter({
     mode: 'history',
     linkExactActiveClass: 'active',
     routes: [
-        {   path: '/', component: HomePage  },
-        {   path:'/contacts', component: ContactPage},
-        {   path: '/posts/:id', component: PostDetail, name: 'post-detail'},
+        {   path: '/', component: HomePage, name:'HomePage'  },
+        {   path:'/contacts', component: ContactPage, name:'ContactPage'},
+        {   path: '/posts/:slug', component: PostDetail, name: 'PostDetail'},
         {   path: '*', component: NotFoundPage}
     ]
 });

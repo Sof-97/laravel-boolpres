@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="container mt-3">
         <h2>Pagina non trovata | Error: 404 </h2>
         <button class="btn btn-secondary" @click="$router.back()">Indietro</button>
     </div>

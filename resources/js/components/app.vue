@@ -1,20 +1,4 @@
 <template>
-    <!-- <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">
-                        Registrati o completa il login.
-                    </div>
-
-                    <div class="card-body">
-                        Questa è la pagina per gli ospiti.
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
-
     <main>
         <div class="container">
             
@@ -29,12 +13,12 @@
                 </div>
             </nav>
         </div>
-
         <router-view></router-view>
     </main>
 </template>
 
 <script>
+import PostsList from './pages/PostList.vue';
 export default {
     name: "App",
     mounted() {

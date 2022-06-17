@@ -18,7 +18,7 @@
             </div>
         </div>
         <h2 v-else>Non ci sono post.</h2>
-        <page-module :pagination="pagination"/>
+        <page-module :pagination="pagination" :getPage="getPage"/>
     </div>
 </template>
 
@@ -51,6 +51,10 @@ export default {
                 })
                 .then((this.isLoading = false));
         },
+        getPage(a){
+            this.page = a;
+            console.log("pagina:", this.page);
+        }
     },
     mounted() {
         this.getPosts();
@@ -79,8 +83,9 @@ export default {
     }
 
     a{
-        right: 10px;
-        bottom: 10px;
+        right: -1px;
+        bottom: -1px;
+        border-end-end-radius: 20px;
     }
 }
 </style>

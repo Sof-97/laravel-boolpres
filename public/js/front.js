@@ -2154,6 +2154,10 @@ __webpack_require__.r(__webpack_exports__);
           "lastPage": last_page
         };
       }).then(this.isLoading = false);
+    },
+    getPage: function getPage(a) {
+      this.page = a;
+      console.log("pagina:", this.page);
     }
   },
   mounted: function mounted() {
@@ -2175,7 +2179,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, ".card-post[data-v-148adc18] {\n  width: calc(25% - 20px);\n  margin: 2.5rem 10px;\n  padding: 10px;\n  border: 2px solid grey;\n  border-radius: 20px;\n}\n.card-post strong[data-v-148adc18] {\n  margin-right: 10px;\n}\n.card-post img[data-v-148adc18] {\n  width: calc(100% + 20px);\n  position: relative;\n  left: -10px;\n  top: -10px;\n  border-radius: 20px 20px 0 0;\n}\n.card-post a[data-v-148adc18] {\n  right: 10px;\n  bottom: 10px;\n}", ""]);
+exports.push([module.i, ".card-post[data-v-148adc18] {\n  width: calc(25% - 20px);\n  margin: 2.5rem 10px;\n  padding: 10px;\n  border: 2px solid grey;\n  border-radius: 20px;\n}\n.card-post strong[data-v-148adc18] {\n  margin-right: 10px;\n}\n.card-post img[data-v-148adc18] {\n  width: calc(100% + 20px);\n  position: relative;\n  left: -10px;\n  top: -10px;\n  border-radius: 20px 20px 0 0;\n}\n.card-post a[data-v-148adc18] {\n  right: -1px;\n  bottom: -1px;\n  border-end-end-radius: 20px;\n}", ""]);
 
 // exports
 
@@ -3470,7 +3474,24 @@ var render = function () {
         "ul",
         { staticClass: "pagination" },
         [
-          _vm._m(0),
+          _c("li", { staticClass: "page-item" }, [
+            _c(
+              "a",
+              {
+                staticClass: "page-link",
+                attrs: { href: "#" },
+                on: {
+                  click: function ($event) {
+                    return _vm.$emit(
+                      _vm.getPage,
+                      _vm.pagination.currentPage - 1
+                    )
+                  },
+                },
+              },
+              [_vm._v("Previous")]
+            ),
+          ]),
           _vm._v(" "),
           _vm._l(_vm.pagination.lastPage, function (page) {
             return _c(
@@ -3488,7 +3509,7 @@ var render = function () {
             )
           }),
           _vm._v(" "),
-          _vm._m(1),
+          _vm._m(0),
         ],
         2
       ),
@@ -3496,16 +3517,6 @@ var render = function () {
   ])
 }
 var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("li", { staticClass: "page-item" }, [
-      _c("a", { staticClass: "page-link", attrs: { href: "#" } }, [
-        _vm._v("Previous"),
-      ]),
-    ])
-  },
   function () {
     var _vm = this
     var _h = _vm.$createElement
@@ -3658,7 +3669,9 @@ var render = function () {
           )
         : _c("h2", [_vm._v("Non ci sono post.")]),
       _vm._v(" "),
-      _c("page-module", { attrs: { pagination: _vm.pagination } }),
+      _c("page-module", {
+        attrs: { pagination: _vm.pagination, getPage: _vm.getPage },
+      }),
     ],
     1
   )

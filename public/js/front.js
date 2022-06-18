@@ -2033,6 +2033,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "PageModule",
   props: {
@@ -2083,9 +2091,6 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.getPost();
-    console.log(this.$route);
-    console.log(this.$route.params);
-    console.log(this.$route.params.slug);
   }
 });
 
@@ -2125,6 +2130,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "PostList",
@@ -2135,29 +2148,33 @@ __webpack_require__.r(__webpack_exports__);
     return {
       isLoading: true,
       posts: [],
-      pagination: {},
-      page: 1
+      pagination: {}
     };
   },
   methods: {
     getPosts: function getPosts() {
       var _this = this;
 
-      this.axios.get("http://127.0.0.1:8000/api/posts?page=".concat(this.page)).then(function (res) {
+      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+      console.log("page:", page);
+
+      if (page < 1) {
+        page = 1;
+      } else if (page > this.pagination.lastPage) {
+        page = this.pagination.lastPage;
+      }
+
+      this.axios.get('http://127.0.0.1:8000/api/posts?page=' + page).then(function (res) {
         var _res$data = res.data,
             data = _res$data.data,
             current_page = _res$data.current_page,
             last_page = _res$data.last_page;
         _this.posts = data;
         _this.pagination = {
-          "currentPage": current_page,
-          "lastPage": last_page
+          currentPage: current_page,
+          lastPage: last_page
         };
       }).then(this.isLoading = false);
-    },
-    getPage: function getPage(a) {
-      this.page = a;
-      console.log("pagina:", this.page);
     }
   },
   mounted: function mounted() {
@@ -3472,62 +3489,57 @@ var render = function () {
     _c("nav", { attrs: { "aria-label": "Page navigation example" } }, [
       _c(
         "ul",
-        { staticClass: "pagination" },
+        { staticClass: "pagination", staticStyle: { cursor: "pointer" } },
         [
-          _c("li", { staticClass: "page-item" }, [
-            _c(
-              "a",
-              {
-                staticClass: "page-link",
-                attrs: { href: "#" },
-                on: {
-                  click: function ($event) {
-                    return _vm.$emit(
-                      _vm.getPage,
-                      _vm.pagination.currentPage - 1
-                    )
-                  },
+          _c(
+            "li",
+            {
+              staticClass: "page-item",
+              on: {
+                click: function ($event) {
+                  return _vm.$emit("getPage", _vm.pagination.currentPage - 1)
                 },
               },
-              [_vm._v("Previous")]
-            ),
-          ]),
+            },
+            [_c("span", { staticClass: "page-link" }, [_vm._v("Previous")])]
+          ),
           _vm._v(" "),
           _vm._l(_vm.pagination.lastPage, function (page) {
             return _c(
               "li",
               {
                 key: page,
-                staticClass: "page-item",
+                staticClass: "page-item page-link",
                 class: _vm.pagination.currentPage == page ? "active" : "",
+                on: {
+                  click: function ($event) {
+                    return _vm.$emit("getPage", page)
+                  },
+                },
               },
-              [
-                _c("a", { staticClass: "page-link", attrs: { href: "#" } }, [
-                  _vm._v(_vm._s(page)),
-                ]),
-              ]
+              [_vm._v("\n                " + _vm._s(page) + "\n            ")]
             )
           }),
           _vm._v(" "),
-          _vm._m(0),
+          _c(
+            "li",
+            {
+              staticClass: "page-item",
+              on: {
+                click: function ($event) {
+                  return _vm.$emit("getPage", _vm.pagination.currentPage + 1)
+                },
+              },
+            },
+            [_c("span", { staticClass: "page-link" }, [_vm._v("Next")])]
+          ),
         ],
         2
       ),
     ]),
   ])
 }
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("li", { staticClass: "page-item" }, [
-      _c("a", { staticClass: "page-link", attrs: { href: "#" } }, [
-        _vm._v("Next"),
-      ]),
-    ])
-  },
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -3654,7 +3666,7 @@ var render = function () {
                   _c(
                     "router-link",
                     {
-                      staticClass: "btn btn-primary position-absolute ",
+                      staticClass: "btn btn-primary position-absolute",
                       attrs: {
                         to: { name: "PostDetail", params: { slug: post.slug } },
                       },
@@ -3670,7 +3682,8 @@ var render = function () {
         : _c("h2", [_vm._v("Non ci sono post.")]),
       _vm._v(" "),
       _c("page-module", {
-        attrs: { pagination: _vm.pagination, getPage: _vm.getPage },
+        attrs: { pagination: _vm.pagination },
+        on: { getPage: _vm.getPosts },
       }),
     ],
     1

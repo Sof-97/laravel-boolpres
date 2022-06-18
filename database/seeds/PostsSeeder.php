@@ -29,7 +29,7 @@ class PostsSeeder extends Seeder
             $post->image = $faker->imageUrl(250, 250);
             $post->slug = Str::slug($post->title, '-');
             $post->save();
-            $post->tags()->sync(Arr::random($tag_ids));
+            $post->tags()->sync(Arr::random($tag_ids, 3));
         }
     }
 }

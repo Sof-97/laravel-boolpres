@@ -2,7 +2,11 @@
     <div class="container mt-3">
         <h2 v-if="isLoading">Caricando...</h2>
         <div v-if="posts.length > 0" class="row">
-            <div :key="post.id" class="card-post position-relative" v-for="post in posts">
+            <div
+                :key="post.id"
+                class="card-post position-relative"
+                v-for="post in posts"
+            >
                 <img :src="post.image" :alt="post.title" />
                 <h4>{{ post.title }}</h4>
                 <p><strong>Descrizione:</strong>{{ post.content }}</p>
@@ -14,47 +18,52 @@
                         >{{ post.category.label }}</span
                     >
                 </div>
-                <router-link :to="{ name: 'PostDetail', params: { slug: post.slug } }" class="btn btn-primary position-absolute ">Visualizza</router-link>
+                <router-link
+                    :to="{ name: 'PostDetail', params: { slug: post.slug } }"
+                    class="btn btn-primary position-absolute"
+                    >Visualizza</router-link
+                >
             </div>
         </div>
         <h2 v-else>Non ci sono post.</h2>
-        <page-module :pagination="pagination" :getPage="getPage"/>
+        <page-module :pagination="pagination" @getPage="getPosts" />
     </div>
 </template>
 
 <script>
-import PageModule from  './PageModule.vue'
+import PageModule from "./PageModule.vue";
 export default {
     name: "PostList",
-    components:{
-        PageModule
+    components: {
+        PageModule,
     },
     data() {
         return {
             isLoading: true,
             posts: [],
             pagination: {},
-            page: 1,
         };
     },
     methods: {
-        getPosts() {
+        getPosts(page = 1) {
+            console.log("page:", page);
+            if(page < 1){
+                page = 1;
+            } else if (page > this.pagination.lastPage){
+                page = this.pagination.lastPage;
+            }
             this.axios
-                .get(`http://127.0.0.1:8000/api/posts?page=${this.page}`)
+                .get('http://127.0.0.1:8000/api/posts?page=' + page)
                 .then((res) => {
                     const { data, current_page, last_page } = res.data;
-                    this.posts = data;  
+                    this.posts = data;
                     this.pagination = {
-                        "currentPage" : current_page,
-                        "lastPage" : last_page,
+                        currentPage: current_page,
+                        lastPage: last_page,
                     };
                 })
                 .then((this.isLoading = false));
         },
-        getPage(a){
-            this.page = a;
-            console.log("pagina:", this.page);
-        }
     },
     mounted() {
         this.getPosts();
@@ -82,7 +91,7 @@ export default {
         border-radius: 20px 20px 0 0;
     }
 
-    a{
+    a {
         right: -1px;
         bottom: -1px;
         border-end-end-radius: 20px;

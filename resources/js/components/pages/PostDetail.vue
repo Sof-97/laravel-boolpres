@@ -33,9 +33,7 @@ export default {
     },
     mounted() {
         this.getPost();
-        console.log(this.$route);
-        console.log(this.$route.params);
-        console.log(this.$route.params.slug);
+        
     },
 };
 </script>
